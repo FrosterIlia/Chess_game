@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f682daa0-12f6-44d2-9bdd-fc3ad8e2910c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="f682daa0-12f6-44d2-9bdd-fc3ad8e2910c" name="Default Changelist" comment="Bug fixes, castling added">
+      <change afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utilities.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chess.py" beforeDir="false" afterPath="$PROJECT_DIR$/chess.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
@@ -22,8 +24,17 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/FrosterIlia/Chess_game.git" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="2M4fNgo0iVHKoBZHkXoXIinWFzB" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -100,6 +111,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="gui" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="chess" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="hhh" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="chess" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -163,6 +195,14 @@
       <option name="presentableId" value="Default" />
       <updated>1677031736695</updated>
     </task>
+    <task id="LOCAL-00001" summary="Bug fixes, castling added">
+      <created>1702103484330</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1702103484330</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -175,43 +215,60 @@
       </list>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Bug fixes, castling added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fixes, castling added" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="846" y="226" key="#gui" timestamp="1702105679283">
+      <screen x="0" y="25" width="2232" height="1156" />
+    </state>
+    <state x="846" y="226" key="#gui/0.25.2232.1156@0.25.2232.1156" timestamp="1702105679283" />
     <state x="860" y="465" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1702101023880">
       <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state x="860" y="465" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.25.2232.1156@0.25.2232.1156" timestamp="1702101023880" />
-    <state width="2211" height="136" key="GridCell.Tab.0.bottom" timestamp="1702103436953">
+    <state x="741" y="203" key="CommitChangelistDialog2" timestamp="1702103731902">
+      <screen x="0" y="25" width="2232" height="1156" />
+    </state>
+    <state x="741" y="203" key="CommitChangelistDialog2/0.25.2232.1156@0.25.2232.1156" timestamp="1702103731902" />
+    <state x="100" y="125" width="2032" height="956" key="DiffContextDialog" timestamp="1702103710091">
+      <screen x="0" y="25" width="2232" height="1156" />
+    </state>
+    <state x="100" y="125" width="2032" height="956" key="DiffContextDialog/0.25.2232.1156@0.25.2232.1156" timestamp="1702103710091" />
+    <state width="2211" height="136" key="GridCell.Tab.0.bottom" timestamp="1702109747770">
       <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state width="1419" height="136" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1701895409754" />
     <state width="2211" height="136" key="GridCell.Tab.0.bottom/0.0.2232.1255@0.0.2232.1255" timestamp="1702088095408" />
-    <state width="2211" height="136" key="GridCell.Tab.0.bottom/0.25.2232.1156@0.25.2232.1156" timestamp="1702103436953" />
-    <state width="2211" height="136" key="GridCell.Tab.0.center" timestamp="1702103436951">
+    <state width="2211" height="136" key="GridCell.Tab.0.bottom/0.25.2232.1156@0.25.2232.1156" timestamp="1702109747770" />
+    <state width="2211" height="136" key="GridCell.Tab.0.center" timestamp="1702109747769">
       <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state width="1419" height="136" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1701895409752" />
     <state width="2211" height="136" key="GridCell.Tab.0.center/0.0.2232.1255@0.0.2232.1255" timestamp="1702088095407" />
-    <state width="2211" height="136" key="GridCell.Tab.0.center/0.25.2232.1156@0.25.2232.1156" timestamp="1702103436951" />
-    <state width="2211" height="136" key="GridCell.Tab.0.left" timestamp="1702103436950">
+    <state width="2211" height="136" key="GridCell.Tab.0.center/0.25.2232.1156@0.25.2232.1156" timestamp="1702109747769" />
+    <state width="2211" height="136" key="GridCell.Tab.0.left" timestamp="1702109747769">
       <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state width="1419" height="136" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1701895409752" />
     <state width="2211" height="136" key="GridCell.Tab.0.left/0.0.2232.1255@0.0.2232.1255" timestamp="1702088095407" />
-    <state width="2211" height="136" key="GridCell.Tab.0.left/0.25.2232.1156@0.25.2232.1156" timestamp="1702103436950" />
-    <state width="2211" height="136" key="GridCell.Tab.0.right" timestamp="1702103436952">
+    <state width="2211" height="136" key="GridCell.Tab.0.left/0.25.2232.1156@0.25.2232.1156" timestamp="1702109747769" />
+    <state width="2211" height="136" key="GridCell.Tab.0.right" timestamp="1702109747770">
       <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state width="1419" height="136" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1701895409753" />
     <state width="2211" height="136" key="GridCell.Tab.0.right/0.0.2232.1255@0.0.2232.1255" timestamp="1702088095408" />
-    <state width="2211" height="136" key="GridCell.Tab.0.right/0.25.2232.1156@0.25.2232.1156" timestamp="1702103436952" />
+    <state width="2211" height="136" key="GridCell.Tab.0.right/0.25.2232.1156@0.25.2232.1156" timestamp="1702109747770" />
     <state x="595" y="389" key="com.intellij.ide.util.TipDialog" timestamp="1702087737427">
       <screen x="0" y="0" width="2232" height="1255" />
     </state>
     <state x="384" y="279" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1701894484129" />
     <state x="595" y="389" key="com.intellij.ide.util.TipDialog/0.0.2232.1255@0.0.2232.1255" timestamp="1702087737427" />
-    <state x="496" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1701895432206">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="769" y="502" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1702103736358">
+      <screen x="0" y="25" width="2232" height="1156" />
     </state>
     <state x="496" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900@0.0.1440.900" timestamp="1701895432206" />
+    <state x="769" y="502" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.25.2232.1156@0.25.2232.1156" timestamp="1702103736358" />
   </component>
 </project>

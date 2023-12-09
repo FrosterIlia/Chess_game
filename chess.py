@@ -25,7 +25,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 
 clock = pygame.time.Clock()
 
-
+pygame.display.set_caption("Chess")
 
 Bp = pygame.image.load("Assets//Bp.png")
 Wp = pygame.image.load("Assets//Wp.png")
@@ -49,6 +49,35 @@ piece_pictures = {"p": [Bp, Wp],
                   }
 
 
+class Game():
+    def __init__(self):
+        self.white_castle = [1, 1]  # left digit - long castle, right digit - short castle
+        self.black_castle = [1, 1]  # left digit - long castle, right digit - short castle
+        self.turn = True  # True - white, False - black
+
+    def switch_turn(self):
+        self.turn = not self.turn
+
+    def get_turn(self):
+        return self.turn
+
+    def get_castle_options(self, color):
+        return self.white_castle if color else self.black_castle
+
+    def forbid_castling(self, value, color): # value: 0 - long castle, 1 - short castle, 2 - both
+        if color:
+            if value == 2:
+                self.white_castle = [0,0]
+            else:
+                self.white_castle[value] = 0
+
+        else:
+            if value == 2:
+                self.black_castle = [0,0]
+            else:
+                self.black_castle[value] = 0
+
+
 class Cell():
     def __init__(self, x, y, color):
         self.x = x
@@ -60,6 +89,7 @@ class Cell():
         self.tag_color = (0, 0, 0)
         self.possible_moves = []
         self.possible_kills = []
+        self.possible_castle = []
 
     def draw(self):
         if self.tag_color == (0, 0, 0):
@@ -130,9 +160,13 @@ class Cell():
                 self.queen_exec(board)
             elif self.piece == "k":
                 self.king_exec(board)
+                if get_king_pos(board, self.piece_color) == [get_chosen().x, get_chosen().y]: # castling
+                    self.possible_castle = self.castle_to_coords(self.check_castling())
+
         else:
             self.possible_kills = []
             self.possible_moves = []
+            self.possible_castle = []
 
     def __repr__(self):
         if self.piece:
@@ -148,7 +182,7 @@ class Cell():
             temp_board[self.x][self.y].piece = ""
             temp_board[i[0]][i[1]].piece_color = self.piece_color
 
-            if isCheck(temp_board, self.piece_color):
+            if is_check(temp_board, self.piece_color):
                 if i in self.possible_moves:
                     self.possible_moves.remove(i)
                 else:
@@ -682,11 +716,116 @@ class Cell():
             else:
                 self.possible_moves.append([self.x - 1, self.y + 1])
 
+        # castle
+        # for white
+        # if self.piece_color:
+        #     if self.check_castling()[0]:
+        #         self.possible_moves.append([2, 7])
+        #     if self.check_castling()[1]:
+        #         self.possible_moves.append([6, 7])
+        #
+        # else: #for black
+        #
+        #     if self.check_castling()[1]:
+        #         self.possible_castle.append([2, 0])
+        #
+        #     if self.check_castling()[0]:
+        #         self.possible_castle.append([6, 0])
+
     def move(self, x, y):
-        if [x, y] in self.possible_moves or [x, y] in self.possible_kills:
+        if [x, y] in self.possible_moves or [x, y] in self.possible_kills or [x, y] in self.possible_castle:
+            # if king or rook moves, forbid castling
+            if self.piece == "k":
+                game.forbid_castling(2, self.piece_color)
+
+            if self.piece == "r":
+                if self.x == 0:
+                    game.forbid_castling(0, self.piece_color)
+
+                if self.x == 7:
+                    game.forbid_castling(1, self.piece_color)
+
             board[x][y].piece = self.piece
             board[x][y].piece_color = self.piece_color
             self.piece = ""
+
+
+        # this moves rooks in castle
+        if [x, y] in self.possible_castle:
+            if [x, y] == [2, 7]:
+                board[0][7].piece = ""
+                board[3][7].piece = "r"
+                board[3][7].piece_color = 1
+
+            if [x, y] == [6, 7]:
+                board[7][7].piece = ""
+                board[5][7].piece = "r"
+                board[5][7].piece_color = 1
+
+            if [x, y] == [6, 0]:
+                board[7][0].piece = ""
+                board[5][0].piece = "r"
+                board[5][0].piece_color = 0
+
+            if [x, y] == [2, 0]:
+                board[0][0].piece = ""
+                board[3][0].piece = "r"
+                board[3][0].piece_color = 0
+
+    def check_castling(self):
+        castle_results = [False, False]  # [white_long, white_short]
+
+        self.castle = game.get_castle_options(color=self.piece_color)
+
+        # white
+        if self.piece == "k":
+            if self.piece_color and not is_check(board, 1):
+                if self.castle[0]:  # long castle
+                    if self.x == 4 and self.y == 7 and board[0][7].piece == "r" and \
+                            not board[1][7].piece and not is_threatened(board, not self.piece_color, [1, 7]) and \
+                            not board[2][7].piece and not is_threatened(board, not self.piece_color, [2, 7]) and \
+                            not board[3][7].piece and not is_threatened(board, not self.piece_color, [3, 7]):
+                        castle_results[0] = True
+
+                if self.castle[1]:  # short castle
+                    if self.x == 4 and self.y == 7 and board[7][7].piece == "r" and \
+                            not board[5][7].piece and not is_threatened(board, not self.piece_color, [5, 7]) and \
+                            not board[6][7].piece and not is_threatened(board, not self.piece_color, [6, 7]):
+                        castle_results[1] = True
+
+            # black
+            if self.piece_color == 0:
+
+                if self.castle[0] and not is_check(board, 0):  # long castle
+                    if self.x == 4 and self.y == 0 and board[0][0].piece == "r" and \
+                            not board[1][0].piece and not is_threatened(board, not self.piece_color, [1, 0]) and \
+                            not board[2][0].piece and not is_threatened(board, not self.piece_color, [2, 0]) and \
+                            not board[3][0].piece and not is_threatened(board, not self.piece_color, [3, 0]):
+                        castle_results[0] = True
+
+                if self.castle[1] and not is_check(board, 0):  # short castle
+                    if self.x == 4 and self.y == 0 and board[7][0].piece == "r" and \
+                            not board[5][0].piece and not is_threatened(board, not self.piece_color, [5, 0]) and \
+                            not board[6][0].piece and not is_threatened(board, not self.piece_color, [6, 0]):
+                        castle_results[1] = True
+
+        return castle_results
+
+    def castle_to_coords(self, castle):
+        coords = []
+        if self.piece_color:
+            if castle[0]:
+                coords.append([2, 7])
+            if castle[1]:
+                coords.append([6, 7])
+
+        else:
+            if castle[0]:
+                coords.append([2, 0])
+            if castle[1]:
+                coords.append([6, 0])
+
+        return coords
 
     def get_possible_moves(self):
         return self.possible_moves
@@ -694,6 +833,8 @@ class Cell():
     def get_possible_kills(self):
         return self.possible_kills
 
+
+game = Game()
 
 board = []
 
@@ -708,16 +849,35 @@ def get_king_pos(board, king_color):
                 return [cell.x, cell.y]
 
 
-def isCheck(board, king_color):
+def is_check(board, king_color):
     for col in board:
         for cell in col:
-            if cell.piece_color != king_color:  # checking pieces that can attack king
+            if cell.piece_color != king_color and cell.piece:  # checking pieces that can attack king
                 cell.calc_possible_moves(board)
                 if get_king_pos(board, king_color) in cell.get_possible_kills():
                     return True
     return False
 
 
+def is_threatened(board, color, coords):
+    for col in board:
+        for cell in col:
+            if cell.piece_color == color and cell.piece:  # checking pieces that can attack this square
+                cell.calc_possible_moves(board)
+                if coords in cell.get_possible_moves():
+                    return True
+    return False
+
+
+def calc_checkmate(board, color):
+    for col in board:
+        for cell in col:
+            if cell.piece and cell.piece_color == color:
+                cell.calc_moves(board)
+                if cell.possible_moves or cell.possible_kills:
+                    return False
+
+    return True
 def untag_all():
     for i in board:
         for j in i:
@@ -743,17 +903,6 @@ def get_chosen():
 
 init_cells()
 
-'''
-board[1][7].set_piece("n", 1)  # white knight
-board[6][0].set_piece("n", 0)  # black knight
-board[7][6].set_piece("p", 1)  # white pawn
-board[4][4].set_piece("r", 0)  # black rook
-board[7][1].set_piece("p", 0)  # black pawn
-board[4][3].set_piece("b", 1)  # white bishop
-board[2][2].set_piece("q", 1)  # white queen
-board[5][2].set_piece("k", 0)  # black king
-board[0][0].set_piece("k", 1)  # white king
-'''
 
 def fill_board():
     global board
@@ -792,6 +941,7 @@ def fill_board():
     board[6][6].set_piece("p", 1)
     board[7][6].set_piece("p", 1)
 
+
 fill_board()
 
 run = True
@@ -803,12 +953,10 @@ while run:
 
     if isChosen:
         get_chosen().calc_moves(board)
-        for i in get_chosen().possible_moves:
+        for i in get_chosen().possible_moves + get_chosen().possible_castle:
             board[i[0]][i[1]].set_tag_color((0, 0, 120))
         for i in get_chosen().possible_kills:
             board[i[0]][i[1]].set_tag_color((120, 0, 0))
-
-
 
     for i in board:
         for j in i:
@@ -818,6 +966,7 @@ while run:
             if j.on_click():
                 if not isChosen:
                     untag_all()
+                    # if j.piece and j.piece_color == game.get_turn():
                     if j.piece:
                         isChosen = True
                         chosen = [j.x, j.y]
@@ -827,19 +976,40 @@ while run:
                         isChosen = False
 
                 else:
-                    if [j.x, j.y] in get_chosen().possible_moves or [j.x, j.y] in get_chosen().possible_kills:
+                    if [j.x, j.y] in get_chosen().possible_moves or [j.x, j.y] in get_chosen().possible_kills or [j.x,
+                                                                                                                  j.y] in get_chosen().possible_castle:
                         get_chosen().move(j.x, j.y)
+                        game.switch_turn()
                         # calculate checkmate
-                        enemy_king_pos = get_king_pos(board,  not get_chosen().piece_color)
+                        '''enemy_king_pos = get_king_pos(board, not get_chosen().piece_color)
                         enemy_king = board[enemy_king_pos[0]][enemy_king_pos[1]]
                         enemy_king.calc_moves(board)
-                        if isCheck(board, not get_chosen().piece_color) and\
-                                not enemy_king.possible_moves and\
+                        if is_check(board, not get_chosen().piece_color) and \
+                                not enemy_king.possible_moves and \
                                 not enemy_king.possible_kills:
-                            print("Mate")
+                            pygame.display.set_caption("Checkmate")
+                            print("CheckMate")
+                        elif is_check(board, not get_chosen().piece_color):
+                            print("Check")
+                            pygame.display.set_caption("Check")
+                        else:
+                            pygame.display.set_caption("Chess")'''
+
+                        if calc_checkmate(board, not get_chosen().piece_color):
+                            pygame.display.set_caption("Checkmate")
+                            print("CheckMate")
+                        elif is_check(board, not get_chosen().piece_color):
+                            print("Check")
+                            pygame.display.set_caption("Check")
+                        else:
+                            pygame.display.set_caption("Chess")
+
+
+
                         isChosen = False
                         untag_all()
                     else:
+                        # if j.piece and j.piece_color == game.get_turn():
                         if j.piece:
                             untag_all()
                             isChosen = True

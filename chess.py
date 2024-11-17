@@ -917,7 +917,7 @@ def fill_board():
     global board
     # black
     board[0][0].set_piece("r", 0)
-    #board[1][0].set_piece("n", 0)
+    board[1][0].set_piece("n", 0)
     board[2][0].set_piece("b", 0)
     board[3][0].set_piece("q", 0)
     board[4][0].set_piece("k", 0)
@@ -925,7 +925,7 @@ def fill_board():
     board[6][0].set_piece("n", 0)
     board[7][0].set_piece("r", 0)
     board[0][1].set_piece("p", 0)
-    board[1][1].set_piece("p", 1)
+    board[1][1].set_piece("p", 0)
     board[2][1].set_piece("p", 0)
     board[3][1].set_piece("p", 0)
     board[4][1].set_piece("p", 0)
